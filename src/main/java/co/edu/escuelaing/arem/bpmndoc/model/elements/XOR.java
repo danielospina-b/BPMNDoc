@@ -8,7 +8,16 @@ import co.edu.escuelaing.arem.bpmndoc.model.Element;
  */
 public class XOR extends Element {
     
-    private Element defaultElem;
-    private Element alternative;
-        
+    private String defaultElemId;
+    private String alternative;
+
+    @Override
+    public String getDescription() {
+        return "[Default: " + defaultElemId + "] " + description;
+    }
+
+    public void setDefaultElementId(String defaultElem) {
+        this.defaultElemId = defaultElem;
+    }
+    
 }

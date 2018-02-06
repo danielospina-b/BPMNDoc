@@ -11,5 +11,13 @@ public class Task extends Element {
     private Element next;
     private Element previous;
     private String type;
+
+    public Task(String type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return "[" + type + " Task] " + name;
+    }
     
 }

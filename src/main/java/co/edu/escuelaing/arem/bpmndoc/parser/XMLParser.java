@@ -1,50 +1,48 @@
 package co.edu.escuelaing.arem.bpmndoc.parser;
 
-import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 /**
  * TODO
  * @author Daniel Ospina
  */
 public class XMLParser {
-    
-    //AGREGADO CODIGO DE EJEMPLO PARA ENTENDER FUNCIONAMIENTO
-    
-    static final String outputEncoding = "UTF-8";
 
-    private static void usage() {
-        System.out.println("Usage: xmlechoparser file1");
-    }
-
-    public static void main(String[] args) throws Exception {
-        String filename = "MyDiagram1.bpmn";
-
-        // Retire el false para hacer un programa que se innvoque desde la linea de comandos
-        if (args.length < 1 && false) {
-            usage();
-        } else {
-
-            DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-            DocumentBuilder db = dbf.newDocumentBuilder();
-            //filename = args[0]; 
-            Document doc = db.parse(new File(filename));
-            navigate(doc);
+    public static Node parse(InputStream in) throws BPMNParseException {
+        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db;
+        try {
+            db = dbf.newDocumentBuilder();
+        } catch (ParserConfigurationException ex) {
+            throw new BPMNParseException("Error trying to parse...", ex);
         }
+        Document doc;
+        try {
+            doc = db.parse(in);
+        } catch (SAXException | IOException ex) {
+            throw new BPMNParseException("Error trying to parse...", ex);
+        }
+        return doc;
     }
 
-    private static void navigate(Node n) {
+    public static void navigate(Node n) {
         navigate(n, "");
     }
 
     private static void navigate(Node n, String prefix) {
         System.out.println(prefix + "Node name : " + n.getNodeName());
-        System.out.println(prefix + "Node type : " + getNodeTypeName(n.getNodeType()));
+        //System.out.println(prefix + "Node type : " + getNodeTypeName(n.getNodeType()));
         System.out.println(prefix + "Node value: " + n.getNodeValue());
 
         // Navegar los atributos del nodo
