@@ -107,9 +107,12 @@ public class ModelBuilder {
                 element.setDescription(startEventChilds.item(i).getChildNodes().item(0).getNodeValue());
             }
         }
+        
         for (Lane lane : pool.getLanes().values()) {
-            Element check = lane.getElements().put(element.getId(), element); //TODO eliminar return value si no da problemas
-            if (check != null) System.out.println("Oh oh!, this wasnt supposed to happen, value: " + check.getName()); //TODO quitar print
+            if (lane.getElements().containsKey(element.getId())) {
+                Element check = lane.getElements().put(element.getId(), element); //TODO eliminar return value si no da problemas
+                if (check != null) System.out.println("Oh oh!, this wasnt supposed to happen, value: " + check.getName()); //TODO quitar print
+            }
         }
     }
     
