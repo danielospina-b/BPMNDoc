@@ -9,5 +9,30 @@ import co.edu.escuelaing.arem.bpmndoc.model.Element;
 public class StartEvent extends Element {
     
     private Element next;
+
+    @Override
+    public void setNextConnection(Element targetElement, String id) {
+        this.next = targetElement;
+    }
+
+    @Override
+    public void setPreviousConnection(Element sourceElement) {
+        
+    }
+
+    @Override
+    public Element getNextElement() {
+        return next;
+    }
+
+    @Override
+    public Element getAltNextElement() {
+        return null;
+    }
+
+    @Override
+    public Element getPreviousElement() {
+        return null;
+    }
     
 }

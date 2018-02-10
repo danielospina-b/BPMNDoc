@@ -34,4 +34,19 @@ public abstract class Element {
         this.description = description;
     }
     
+    /**
+     * 
+     * @param targetElement
+     * @param id acts as a modifier in case model logic requires it
+     */
+    public abstract void setNextConnection(Element targetElement, String id);
+
+    public abstract void setPreviousConnection(Element sourceElement);
+    
+    public abstract Element getNextElement();
+    
+    public abstract Element getAltNextElement();
+    
+    public abstract Element getPreviousElement();
+    
 }

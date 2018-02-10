@@ -16,8 +16,34 @@ public class Task extends Element {
         this.type = type;
     }
 
+    @Override
     public String getName() {
         return "[" + type + " Task] " + name;
+    }
+
+    @Override
+    public void setNextConnection(Element targetElement, String id) {
+        this.next = targetElement;
+    }
+
+    @Override
+    public void setPreviousConnection(Element sourceElement) {
+        this.previous = sourceElement;
+    }
+
+    @Override
+    public Element getNextElement() {
+        return next;
+    }
+
+    @Override
+    public Element getAltNextElement() {
+        return null;
+    }
+
+    @Override
+    public Element getPreviousElement() {
+        return previous;
     }
     
 }

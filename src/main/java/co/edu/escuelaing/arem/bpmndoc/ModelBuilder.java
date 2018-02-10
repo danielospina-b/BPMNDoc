@@ -109,7 +109,7 @@ public class ModelBuilder {
         }
         for (Lane lane : pool.getLanes().values()) {
             Element check = lane.getElements().put(element.getId(), element); //TODO eliminar return value si no da problemas
-            if (check != null) System.out.println("Oh oh!, this wasnt supposed to happen, value: " + check.getName());
+            if (check != null) System.out.println("Oh oh!, this wasnt supposed to happen, value: " + check.getName()); //TODO quitar print
         }
     }
     
@@ -159,7 +159,14 @@ public class ModelBuilder {
     }
 
     private static void setSequenceFlow(Node item, Pool pool) {
-        
+        NamedNodeMap sequenceFlowAttributes = item.getAttributes();
+        String id = sequenceFlowAttributes.getNamedItem("id").getNodeValue();
+        String sourceRef = sequenceFlowAttributes.getNamedItem("sourceRef").getNodeValue();
+        String targetRef = sequenceFlowAttributes.getNamedItem("targetRef").getNodeValue();
+        Element sourceElement = searchElement(sourceRef, pool);
+        Element targetElement = searchElement(targetRef, pool);
+        sourceElement.setNextConnection(targetElement, id);
+        targetElement.setPreviousConnection(sourceElement);
     }
 
     private static void addLane(Node laneNode, Pool pool) {
@@ -187,6 +194,17 @@ public class ModelBuilder {
         }
         
         pool.addLane(poolId, lane);
+    }
+
+    private static Element searchElement(String idElement, Pool pool) {
+        Element elem = null;
+        
+        for (Lane lane : pool.getLanes().values()) {
+            if (elem == null) {
+                elem = lane.getElements().get(idElement);
+            }
+        }
+        return elem;
     }
 
 }

@@ -53,6 +53,11 @@ public class Main {
             System.out.println("---- " + lane.getName() + " " + lane.getId() + " " + lane.getDescription());
             for (Element elem : lane.getElements().values()) {
                 System.out.println("----____ " + elem.getName() + " " + elem.getId() + " " + elem.getDescription());
+                String next = "";
+                String previous = "";
+                if (elem.getNextElement() != null) next = elem.getNextElement().getName();
+                if (elem.getPreviousElement() != null) previous = elem.getPreviousElement().getName();
+                System.out.println("----____.... Next:" + next + " Previous: " + previous);
             }
 //            for (String key : lane.getElements().keySet()) {
 //                System.out.println("----____ " + key);
