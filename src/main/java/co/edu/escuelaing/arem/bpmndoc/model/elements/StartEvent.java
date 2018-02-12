@@ -9,12 +9,21 @@ import co.edu.escuelaing.arem.bpmndoc.model.Element;
 public class StartEvent extends Element {
     
     private Element next;
-
+    
+    /**
+     * Sets the element connected after this StartEvent
+     * @param targetElement Element after
+     * @param id modifier not used
+     */
     @Override
     public void setNextConnection(Element targetElement, String id) {
         this.next = targetElement;
     }
-
+    
+    /**
+     * Start Event doesn't have a predecessor so this method does nothing.
+     * @param sourceElement predecessor not used
+     */
     @Override
     public void setPreviousConnection(Element sourceElement) {
         
@@ -24,12 +33,20 @@ public class StartEvent extends Element {
     public Element getNextElement() {
         return next;
     }
-
+    
+    /**
+     * Start Event doesn't have a alternative successor so this method returns null.
+     * @return null
+     */
     @Override
     public Element getAltNextElement() {
         return null;
     }
-
+    
+    /**
+     * Start Event doesn't have a predecessor so this method returns null.
+     * @return null
+     */
     @Override
     public Element getPreviousElement() {
         return null;

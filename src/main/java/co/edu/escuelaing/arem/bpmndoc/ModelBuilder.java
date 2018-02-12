@@ -12,19 +12,29 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 /**
- * //TODO
+ * Builds the BPMN Process in Java objects
  *
  * @author Daniel Ospina
  */
 public class ModelBuilder {
-
+    
+    /**
+     * Gets the Pool object which represents the BPMN process.
+     * @param node Node representation of the BPMN Process
+     * @return a Pool object representing the BPMN Process.
+     */
     public static Pool getModel(Node node) {
         Node process = findProcess(node);
         //XMLParser.navigate(process);
         Pool pool = buildModel(process);
         return pool;
     }
-
+    
+    /**
+     * Ignores irrelevant information for the model and gets the exact node for modelation.
+     * @param node The node to extract the process from.
+     * @return A Node with only the BPMN Process relevant information.
+     */
     private static Node findProcess(Node node) {
 
         if (node.getNodeName().equals("model:process")) {
@@ -40,7 +50,12 @@ public class ModelBuilder {
         }
         return null;
     }
-
+    
+    /**
+     * Builds the model of a given process
+     * @param process a Node of the process.
+     * @return the Pool object which represents the BPMN process.
+     */
     private static Pool buildModel(Node process) {
         Pool pool = new Pool();
         NamedNodeMap attributes = process.getAttributes();
@@ -89,7 +104,13 @@ public class ModelBuilder {
         }
         return pool;
     }
-
+    
+    /**
+     * Assists buidlModel() setting a new element in the pool.
+     * @param item Node item to be converted to the Java Object BPMN Model
+     * @param pool Pool to insert the Element
+     * @param element Element to add the proper BMPN information.
+     */
     private static void setElement(Node item, Pool pool, Element element) {
         NamedNodeMap startEventAttributes = item.getAttributes();
         for (int i = 0; i < startEventAttributes.getLength(); i++) {
@@ -114,6 +135,11 @@ public class ModelBuilder {
         }
     }
     
+    /**
+     * Sets a lane in a given Pool
+     * @param item Node of a laneSet
+     * @param pool Pool to insert the lane.
+     */
     private static void setLaneSet(Node item, Pool pool) {
         NodeList laneSetChilds = item.getChildNodes();
         for (int i = 0; i < laneSetChilds.getLength(); i++) {
@@ -122,32 +148,62 @@ public class ModelBuilder {
             }
         }
     }
-
+    
+    /**
+     * Adds a new Start Event to the Pool
+     * @param item Element to be added.
+     * @param pool Pool to insert the element.
+     */
     private static void setStartEvent(Node item, Pool pool) {
         StartEvent event = new StartEvent();
         setElement(item, pool, event);
     }
-
+    
+    /**
+     * Adds a new End Event to the Pool
+     * @param item Element to be added.
+     * @param pool Pool to insert the element.
+     */
     private static void setEndEvent(Node item, Pool pool) {
         EndEvent event = new EndEvent();
         setElement(item, pool, event);
     }
 
+    /**
+     * Adds a new User task to the Pool
+     * @param item Element to be added.
+     * @param pool Pool to insert the element.
+     */
     private static void setUserTask(Node item, Pool pool) {
         Task task = new Task("User");
         setElement(item, pool, task);
     }
 
+    /**
+     * Adds a new Service Task to the Pool
+     * @param item Element to be added.
+     * @param pool Pool to insert the element.
+     */
     private static void setServiceTask(Node item, Pool pool) {
         Task task = new Task("Service");
         setElement(item, pool, task);
     }
 
+    /**
+     * Adds a new Receive Task to the Pool
+     * @param item Element to be added.
+     * @param pool Pool to insert the element.
+     */
     private static void setReceiveTask(Node item, Pool pool) {
         Task task = new Task("Receive");
         setElement(item, pool, task);
     }
 
+    /**
+     * Adds a new Exclusive Gateway to the Pool
+     * @param item Element to be added.
+     * @param pool Pool to insert the element.
+     */
     private static void setExclusiveGateway(Node item, Pool pool) {
         XOR gateway = new XOR();
         NamedNodeMap startEventAttributes = item.getAttributes();
@@ -159,6 +215,11 @@ public class ModelBuilder {
         setElement(item, pool, gateway);
     }
 
+    /**
+     * Add a new relation between two elements to a Given pool.
+     * @param item SequenceFlow Node
+     * @param pool Pool to add the connection.
+     */
     private static void setSequenceFlow(Node item, Pool pool) {
         NamedNodeMap sequenceFlowAttributes = item.getAttributes();
         String id = sequenceFlowAttributes.getNamedItem("id").getNodeValue();
@@ -169,10 +230,17 @@ public class ModelBuilder {
         try {
             sourceElement.setNextConnection(targetElement, id);
             targetElement.setPreviousConnection(sourceElement);
-        } catch (NullPointerException ex) {}
+        } catch (NullPointerException ex) {
+            System.out.println("Warning at Parsing: SequenceFlow from " + sourceRef + " to " + targetRef);
+        }
         
     }
-
+    
+    /**
+     * Adds a Lane to a iven pool.
+     * @param laneNode lane Node.
+     * @param pool Pool to add the lane.
+     */
     private static void addLane(Node laneNode, Pool pool) {
         Lane lane = new Lane();
         String poolId = "defaultid";
@@ -199,7 +267,12 @@ public class ModelBuilder {
         
         pool.addLane(poolId, lane);
     }
-
+    /**
+     * Searchs for a Element in a given Pool and the id of the element.
+     * @param idElement id of the element
+     * @param pool Pool where is going to be searched.
+     * @return first instance found of the Element
+     */
     private static Element searchElement(String idElement, Pool pool) {
         Element elem = null;
         

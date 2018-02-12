@@ -22,6 +22,11 @@ public class XOR extends Element {
         this.defaultElemId = defaultElem;
     }
 
+    /**
+     * Sets either the next or alternative connection of this XOR Gateway.
+     * @param targetElement successor element.
+     * @param id id modifier to decide if its the alternative or default connection.
+     */
     @Override
     public void setNextConnection(Element targetElement, String id) {
         if (defaultElemId.equals(id)) {
@@ -32,21 +37,37 @@ public class XOR extends Element {
         }
     }
 
+    /**
+     * Sets the predecessor of this XOR Gateway.
+     * @param sourceElement predecessor element.
+     */
     @Override
     public void setPreviousConnection(Element sourceElement) {
         this.previous = sourceElement;
     }
-
+    
+    /**
+     * Gets the successor for this XOR Gateway
+     * @return successor element
+     */
     @Override
     public Element getNextElement() {
         return defaultElem;
     }
-
+    
+    /**
+     * Gets the alternative successor for this XOR Gateway
+     * @return alternative successor element
+     */
     @Override
     public Element getAltNextElement() {
         return alternative;
     }
 
+    /**
+     * Gets the predecessor of this XOR Gateway
+     * @return predecessor element.
+     */
     @Override
     public Element getPreviousElement() {
         return previous;

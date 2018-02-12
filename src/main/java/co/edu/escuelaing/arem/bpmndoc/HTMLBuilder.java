@@ -9,11 +9,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.URISyntaxException;
 import org.apache.commons.io.FileUtils;
 
 /**
- * //TODO
+ * This class generates the HTML files that represents the BMPN Documentation made from a .bpmn file
  * @author Daniel Ospina
  */
 public class HTMLBuilder {
@@ -24,8 +23,14 @@ public class HTMLBuilder {
     private static final String LANE_TEMPLATE = "/templates/lane_template.html";
     private static final String ELEMENTS_PATH = GENERATION_PATH + "elements/";
     private static final String ELEMENTS_FROM_GENERATION_PATH = "elements/";
-
-    public static void generateHtml(Pool pool) throws FileNotFoundException, IOException, URISyntaxException {
+    
+    /**
+     * Generates the HTML Documentation files of a given Pool Object at a folder in the running classpath.
+     * @param pool Pool for Documentation generation
+     * @throws FileNotFoundException Thrown when template resource files are not found, these are designated at the static variables in this class.
+     * @throws IOException Thrown when I/O exception occurs.
+     */
+    public static void generateHtml(Pool pool) throws FileNotFoundException, IOException {
         for (Lane lane : pool.getLanes().values()) {
             for (Element element : lane.getElements().values()) {
                 generateElementsHtml(element);
@@ -34,8 +39,14 @@ public class HTMLBuilder {
         generateIndexHtml(pool);
         
     }
-
-    private static void generateElementsHtml(Element element) throws FileNotFoundException, IOException, URISyntaxException {
+    
+    /**
+     * This method creates the files that represents Elements in BPMN Syntax
+     * @param element Element to generate documentation for.
+     * @throws FileNotFoundException Thrown when template resource files are not found, these are designated at the static variables in this class.
+     * @throws IOException Thrown when I/O exception occurs.
+     */
+    private static void generateElementsHtml(Element element) throws FileNotFoundException, IOException {
         InputStream templateFile = HTMLBuilder.class.getResourceAsStream(ELEMENT_TEMPLATE);
         String htmlStr = getFileContent(templateFile);
         htmlStr = htmlStr.replace("{elementName}", element.getName());
@@ -69,8 +80,13 @@ public class HTMLBuilder {
         File htmlFile = new File(path);
         FileUtils.writeStringToFile(htmlFile, htmlStr);
     }
-
-    private static void generateIndexHtml(Pool pool) throws IOException, URISyntaxException {
+    
+    /**
+     * This method creates the index file for general navigation of a BPMN pool
+     * @param pool Pool to generate BPMN Documentation.
+     * @throws IOException Thrown when I/O exception occurs.
+     */
+    private static void generateIndexHtml(Pool pool) throws IOException {
         InputStream templateFile = HTMLBuilder.class.getResourceAsStream(INDEX_TEMPLATE);
         String htmlStr = getFileContent(templateFile);
         htmlStr = htmlStr.replace("{poolName}", pool.getName());
@@ -85,7 +101,7 @@ public class HTMLBuilder {
         FileUtils.writeStringToFile(htmlFile, htmlStr);
     }
 
-    private static String getLaneHtml(Lane lane) throws IOException, URISyntaxException {
+    private static String getLaneHtml(Lane lane) throws IOException {
         InputStream templateFile = HTMLBuilder.class.getResourceAsStream(LANE_TEMPLATE);
         String htmlStr = getFileContent(templateFile);
         htmlStr = htmlStr.replace("{laneName}", lane.getName());
@@ -97,6 +113,12 @@ public class HTMLBuilder {
         return htmlStr;
     }
     
+    /**
+     * Gets the string from a InputStream
+     * @param fis InputStream to get the String for.
+     * @return a String from the InputStream
+     * @throws IOException Thrown when I/O exception occurs.
+     */
     private static String getFileContent(InputStream fis) throws IOException {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(fis, "UTF-8"))) {
             StringBuilder sb = new StringBuilder();

@@ -40,18 +40,34 @@ public abstract class Element {
     }
     
     /**
-     * 
-     * @param targetElement
+     * Sets a connection between this element and its successor
+     * @param targetElement succesor Element.
      * @param id acts as a modifier in case model logic requires it
      */
     public abstract void setNextConnection(Element targetElement, String id);
-
+    
+    /**
+     * Sets a connection between this element and its predecessor.
+     * @param sourceElement predecessor element.
+     */
     public abstract void setPreviousConnection(Element sourceElement);
     
+    /**
+     * Gets the successor connection element of this element (if it has one).
+     * @return Successor element.
+     */
     public abstract Element getNextElement();
     
+    /**
+     * In case element has two successors returns the alternative successor.
+     * @return Alternative successor element.
+     */
     public abstract Element getAltNextElement();
     
+    /**
+     * Gets the successor connection element of this element (if it has one).
+     * @return Predecessor element.
+     */
     public abstract Element getPreviousElement();
     
 }

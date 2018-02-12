@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package co.edu.escuelaing.arem.bpmndoc.parser;
 
 /**
- *
- * @author daniel
+ * Exception intended to deal with errors at the parsing stage of BPMNDoc
+ * @author Daniel Ospina
  */
 public class BPMNParseException extends Exception {
 
