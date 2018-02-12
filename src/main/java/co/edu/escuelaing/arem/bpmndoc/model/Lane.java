@@ -15,6 +15,7 @@ public class Lane {
 
     public Lane() {
         elements = new HashMap<>();
+        description = "";
     }
 
     public String getName() {

@@ -9,7 +9,12 @@ public abstract class Element {
     protected String name;
     protected String id;
     protected String description;
-
+    
+    public Element() {
+        description = "";
+        name = "";
+    }
+    
     public String getName() {
         return name;
     }

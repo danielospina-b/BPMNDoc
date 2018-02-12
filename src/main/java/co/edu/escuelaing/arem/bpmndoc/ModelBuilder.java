@@ -7,7 +7,6 @@ import co.edu.escuelaing.arem.bpmndoc.model.elements.EndEvent;
 import co.edu.escuelaing.arem.bpmndoc.model.elements.StartEvent;
 import co.edu.escuelaing.arem.bpmndoc.model.elements.Task;
 import co.edu.escuelaing.arem.bpmndoc.model.elements.XOR;
-import java.util.HashMap;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -110,8 +109,7 @@ public class ModelBuilder {
         
         for (Lane lane : pool.getLanes().values()) {
             if (lane.getElements().containsKey(element.getId())) {
-                Element check = lane.getElements().put(element.getId(), element); //TODO eliminar return value si no da problemas
-                if (check != null) System.out.println("Oh oh!, this wasnt supposed to happen, value: " + check.getName()); //TODO quitar print
+                lane.getElements().put(element.getId(), element);
             }
         }
     }
@@ -168,8 +166,11 @@ public class ModelBuilder {
         String targetRef = sequenceFlowAttributes.getNamedItem("targetRef").getNodeValue();
         Element sourceElement = searchElement(sourceRef, pool);
         Element targetElement = searchElement(targetRef, pool);
-        sourceElement.setNextConnection(targetElement, id);
-        targetElement.setPreviousConnection(sourceElement);
+        try {
+            sourceElement.setNextConnection(targetElement, id);
+            targetElement.setPreviousConnection(sourceElement);
+        } catch (NullPointerException ex) {}
+        
     }
 
     private static void addLane(Node laneNode, Pool pool) {

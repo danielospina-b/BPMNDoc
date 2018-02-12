@@ -35,4 +35,9 @@ public class EndEvent extends Element {
         return previous;
     }
     
+    @Override
+    public String getName() {
+        return "[End Event] " + super.getName();
+    }
+    
 }

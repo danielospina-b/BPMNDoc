@@ -15,7 +15,7 @@ public class XOR extends Element {
 
     @Override
     public String getDescription() {
-        return "[Default: " + defaultElemId + "] " + description;
+        return "[Default option: " + defaultElem.getName() + "] " + description;
     }
 
     public void setDefaultElementId(String defaultElem) {
@@ -50,6 +50,11 @@ public class XOR extends Element {
     @Override
     public Element getPreviousElement() {
         return previous;
+    }
+    
+    @Override
+    public String getName() {
+        return "[XOR Gateway] " + super.getName();
     }
     
 }

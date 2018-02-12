@@ -35,4 +35,9 @@ public class StartEvent extends Element {
         return null;
     }
     
+    @Override
+    public String getName() {
+        return "[Start Event] " + super.getName();
+    }
+    
 }

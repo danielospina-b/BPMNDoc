@@ -15,6 +15,8 @@ public class Pool {
 
     public Pool() {
         lanes = new HashMap<>();
+        name = "";
+        description = "";
     }
 
     public void setId(String id) {

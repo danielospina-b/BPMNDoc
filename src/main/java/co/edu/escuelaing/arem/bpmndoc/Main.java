@@ -1,12 +1,12 @@
 package co.edu.escuelaing.arem.bpmndoc;
 
-import co.edu.escuelaing.arem.bpmndoc.model.Element;
-import co.edu.escuelaing.arem.bpmndoc.model.Lane;
 import co.edu.escuelaing.arem.bpmndoc.model.Pool;
 import co.edu.escuelaing.arem.bpmndoc.parser.BPMNParseException;
 import co.edu.escuelaing.arem.bpmndoc.parser.XMLParser;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.w3c.dom.Node;
@@ -18,16 +18,18 @@ import org.w3c.dom.Node;
 public class Main {
     
     public static void main(String[] args) {
-        String filename = "Diagramita2.bpmn";
-        //filename = args[0];
-        
-        if (args.length < 1 && false) {
+        String filename = args[0];        
+        if (args.length < 1) {
             usage();
         }
         else {
+            System.out.println("Parsing started for: " + args[0]);
             Node node = startParse(filename);
-            Pool pool = ModelBuilder.getModel(node);
-            draw(pool);
+            if (node != null) {
+                Pool pool = ModelBuilder.getModel(node);
+                generateHTML(pool);
+                System.out.println("Parsing finished, BPMN Documentation generated at: " + HTMLBuilder.GENERATION_PATH);   
+            }
         }
     }
     
@@ -35,33 +37,25 @@ public class Main {
         Node node = null;
         try {
             node = XMLParser.parse(new FileInputStream(filename));
-        } catch (FileNotFoundException | BPMNParseException ex) {
-            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Error parsing " + filename, ex);
+        } catch (FileNotFoundException ex) {
+            System.out.println("Error parsing " + filename + " | File not Found");
+        } catch (BPMNParseException ex) {
+            System.out.println("Error parsing" + filename);
         }
         return node;
     }
     
     private static void usage() {
-        System.out.println("Usage: xmlechoparser file1");
+        System.out.println("Use java -jar [BPMN_JAR_NAME] [.bpmn file]");
     }
 
-    private static void draw(Pool pool) {
-        System.out.println(pool.getName());
-        System.out.println(pool.getDescription());
-        System.out.println(pool.getId());
-        for (Lane lane : pool.getLanes().values()) {
-            System.out.println("---- " + lane.getName() + " " + lane.getId() + " " + lane.getDescription());
-            for (Element elem : lane.getElements().values()) {
-                System.out.println("----____ " + elem.getName() + " " + elem.getId() + " " + elem.getDescription());
-                String next = "";
-                String previous = "";
-                if (elem.getNextElement() != null) next = elem.getNextElement().getName();
-                if (elem.getPreviousElement() != null) previous = elem.getPreviousElement().getName();
-                System.out.println("----____.... Next:" + next + " Previous: " + previous);
-            }
-//            for (String key : lane.getElements().keySet()) {
-//                System.out.println("----____ " + key);
-//            }
+    private static void generateHTML(Pool pool) {
+        try {
+            HTMLBuilder.generateHtml(pool);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Error generating html file", ex);
+        } catch (IOException | URISyntaxException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, "Error generating html file", ex);
         }
     }
 }
