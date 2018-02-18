@@ -28,7 +28,7 @@ Este proceso tiene dos etapas clave:
 
 ## Documentación del proyecto [JAVADOC]
 
-Este proyecto se encuentra completamente documentado, y se puede encontrar el Javadoc en este mismo repositorio, y se puede acceder al índice haciendo clic [AQUI](apidocs/index.html).
+Este proyecto se encuentra completamente documentado, se puede encontrar el Javadoc en este mismo repositorio, y se puede acceder al índice haciendo clic [AQUI](http://htmlpreview.github.com/?https://github.com/danielospina-b/BPMNDoc/blob/master/apidocs/index.html).
 
 ## Navegando la Documentación BPMNDoc.
 
